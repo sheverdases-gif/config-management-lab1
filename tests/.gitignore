@@ -1,0 +1,11 @@
+# Кэш Python
+__pycache__/
+*.pyc
+
+# Настройки редакторов (Правило Г5)
+.vscode/
+.idea/
+
+# Системные файлы Windows
+.DS_Store
+Thumbs.db
