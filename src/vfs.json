@@ -1,0 +1,32 @@
+{
+    "type": "dir",
+    "children": {
+        "home":{
+            "type": "dir",
+            "children":{
+                "user":{
+                    "type": "dir",
+                    "children":{
+                        "docs":{
+                            "type": "dir",
+                            "children":{}
+                        },
+                        "readme.txt":{
+                            "type": "file",
+                            "content": "This is a virtual text file in VFS."
+                        }
+                    }
+                }
+            }
+        },
+        "var":{
+            "type": "dir",
+            "children": {
+                "log":{
+                    "type": "dir",
+                    "children":{}
+                }
+            }
+        }
+    }
+}
