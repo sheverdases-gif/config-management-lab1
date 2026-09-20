@@ -13,7 +13,7 @@
                         },
                         "readme.txt":{
                             "type": "file",
-                            "content": "This is a virtual text file in VFS."
+                            "content": "Строка1\nСтрока2\nСтрока3\nСтрока4\nСтрока5\nСтрока6\nСтрока7\nСтрока8\nСтрока9\nСтрока10\nСтрока11\nСтрока12\nСтрока13"
                         }
                     }
                 }

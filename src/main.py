@@ -8,16 +8,20 @@ DEFAULT_VFS_NAME = "default_vfs"
 CMD_EXIT = "exit"
 CMD_LS = "ls"
 CMD_CD = "cd"
+CMD_HISTORY = "history"
+CMD_TREE = "tree"
+CMD_HEAD = "head"
+
+DEFAULT_HEAD_LINES = 10
 
 vfs_tree = {}
 current_path = []
 vfs_name = "vfs"
+history_list = []
 
 def load_vfs(vfs_path: str) -> None:
     
-    """Загружает структуру виртуальной файловой системы из JSON-файла.
-    Args:
-        vfs_path: Путь к файлу vfs.json на диске."""
+    """Загружает структуру виртуальной файловой системы из JSON-файла."""
     
     global vfs_tree, vfs_name
     if not os.path.exists(vfs_path):
@@ -33,9 +37,7 @@ def load_vfs(vfs_path: str) -> None:
 
 def get_current_dir_node() -> dict:
 
-    """Возвращает JSON-узел текущей директории, в которой находится пользователь.
-    Returns:
-        dict: Узел текущей папки из vfs_tree."""
+    """Возвращает JSON-узел текущей директории, в которой находится пользователь."""
     
     node = vfs_tree
     for folder in current_path:
@@ -50,12 +52,23 @@ def show_promt() -> None:
     path_str = "/" + "/".join(current_path)
     print(f"[{vfs_name} {path_str}]>", end="", flush = True )
 
+def print_tree(node: dict, prefix: str = "") -> None:
+    """Рекурсивно выводит структуру VFS в виде дерева"""
+    if "children" not in node or not node["children"]:
+        return
+
+    items = list(node["children"].keys())
+    for i, item_name in enumerate(items):
+        print(f"{prefix}--- {item_name}")
+
+        child_node = node["children"][item_name]
+        if child_node.get("type") == "dir":
+            new_prefix = prefix + "   "
+            print_tree(child_node, new_prefix)
+
 def execute_command(command: str, args: list[str]) -> None:
 
-    """Выполняет команду-заглушку или сообщает об ошибке.
-    Args:
-    command: имя введенной команды.
-    args: список аргументов команды."""
+    """Выполняет встроенные UNIX-команды эмулятора."""
     current_node = get_current_dir_node()
 
     if command == CMD_LS:
@@ -81,16 +94,33 @@ def execute_command(command: str, args: list[str]) -> None:
                 print(f"cd: не является директорией: {target}")
         else:
             print(f"cd: нет такого файла или директории {target}")
+    elif command == CMD_HISTORY:
+        for idx, cmd_entry in enumerate(history_list, start = 1):
+            print(f"{idx} {cmd_entry}")
+    elif command == CMD_TREE:
+        print_tree(current_node)
+    elif command == CMD_HEAD:
+        if not args:
+            print("head: пропущено имя файла")
+            return
+        target = args[0]
+        if "children" in current_node and target in current_node["children"]:
+            file_node = current_node["children"][target]
+            if file_node.get("type") == "file":
+                content = file_node.get("content", "")
+                lines = content.splitlines()
+                for line in lines[:DEFAULT_HEAD_LINES]:
+                    print(line)
+            else:
+                print(f"head: '{target}' является директорией")
+        else:
+            print(f"head: '{target}': нет такого файла")
     else:
         print(f"Ошибка: неизвестная команда '{command}'")
 
 def handle_input(user_input: str) -> bool:
 
-    """Разбирает введенную строку и управляет жизненным циклом REPL.
-    Args:
-        user_input: необработанная строка из стандартного ввода.
-    Returns:
-        bool: True, если нужно продолжить REPL, False — если нужно выйти."""
+    """Разбирает введенную строку и управляет жизненным циклом REPL."""
 
     trimmed = user_input.strip()
     if not trimmed or trimmed.startswith("#"):
@@ -104,6 +134,8 @@ def handle_input(user_input: str) -> bool:
     
     command = tokens[0]
     args = tokens[1:]
+
+    history_list.append(trimmed)
 
     if command == CMD_EXIT:
         print("Завершение работы эмулятора.")
@@ -146,7 +178,6 @@ def start_repl() -> None:
     """Основная функция запуска интерактивного REPL-окружения."""
 
     args = parse_arguments()
-
     load_vfs(args.vfs)
 
     print(f"Эмулятор командной строки [23 Вариант]")

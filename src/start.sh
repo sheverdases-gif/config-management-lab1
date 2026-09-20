@@ -1,8 +1,6 @@
-#Тестируем навигацию по JSON VFS
-ls
+#Тест уникальных команд
+tree
 cd home
-lscd user
-ls
-cd ..
-cd ..
-ls
+cd user
+head readme.txt
+history
