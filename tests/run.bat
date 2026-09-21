@@ -1,0 +1,1 @@
+python src/main.py --vfs src/vfs.json --script src/start.sh
