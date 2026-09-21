@@ -72,7 +72,7 @@ def cmd_cd_logic(args: list[str], current_node: dict) -> None:
             current_path.pop()
     elif "children" in current_node and target in current_node["children"]:
         child_node = current_node["children"][target]
-        if child.node.get("type") == "dir":
+        if child_node.get("type") == "dir":
             current_path.append(target)
         else:
              print(f"cd: не является директорией: {target}")
