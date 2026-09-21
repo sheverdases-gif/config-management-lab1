@@ -2,8 +2,8 @@ import unittest
 import sys
 import os
 
-src_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
-sys.path.insert(0, src_dir)
+base_dir = os.path.dirname(__file__)
+src_dir = os.path.abspath(os.path.join(base_dir, "..", "src"))
 
 import main
 

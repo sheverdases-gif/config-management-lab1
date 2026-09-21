@@ -34,7 +34,7 @@ def load_vfs(vfs_path: str) -> None:
         sys.exit(1)
 
 def get_current_dir_node() -> dict:
-    """Возвращает JSON-узел текущей директории, в которой находится пользователь."""
+    """Возвращает JSON-узел текущей директори эмулятора."""
     node = vfs_tree
     for folder in current_path:
         if "children" in node and folder in node["children"]:
@@ -149,7 +149,8 @@ def run_start_script(script_path: str) -> None:
         print(f"Ошибка: Стартовый скрипт не найден по пути {script_path}")
         return
     
-    print(f"\n--- Выполнение стартового скрипта: {script_path} ---")
+    print(f"\n--- Выполнение стартового скрипта:"
+          f"{script_path} ---")
     with open(script_path, "r", encoding="utf-8") as f:
         for line in f:
             path_str = "/" + "/".join(current_path)
@@ -161,7 +162,9 @@ def run_start_script(script_path: str) -> None:
 
 def parse_arguments() -> argparse.Namespace:
       """Парсит аргументы командной строки при запуске приложения."""
-      parser = argparse.ArgumentParser(description="Эмулятор командной строки UNIX-подобной ОС.")  
+      parser = argparse.ArgumentParser(
+          description="Эмулятор командной строки UNIX-подобной ОС."
+          )  
       parser.add_argument("--vfs", required = True, help = "Путь к физическому расположению VFS JSON")
       parser.add_argument("--script", required = True, help = "Путь к стартовому скрипту эмулятора")
 
@@ -173,7 +176,8 @@ def start_repl() -> None:
     load_vfs(args.vfs)
 
     print(f"Эмулятор командной строки [23 Вариант]")
-    print(f"[DEBUG] модель VFS успешно загружена из: {args.vfs}")
+    print(f"[DEBUG] модель VFS успешно загружена из:"
+          f"{args.vfs}")
     print(f'Введите "{CMD_EXIT}" для выхода.\n')
 
     run_start_script(args.script)

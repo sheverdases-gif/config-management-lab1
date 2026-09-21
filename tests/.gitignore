@@ -4,6 +4,5 @@ __pycache__/
 .vscode/
 .idea/
 
-# Системные файлы Windows
 .DS_Store
 Thumbs.db
