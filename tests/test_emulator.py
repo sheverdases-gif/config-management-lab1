@@ -43,11 +43,11 @@ class TestEmulator(unittest.TestCase):
         self.assertEqual(len(main.history_list), 0)
 
     def test_handle_input_inline_comment(self) -> None:
-        """Проверяет отсечение комментария, который идет после рабочей команды"""
+        """Проверяет отсечение встроенного комментария"""
         main.history_list.clear()
         captured = []
         main.execute_command = lambda cmd, args: captured.append((cmd, args))
-        main.handle_input("ls -la #Показываем скрытые файлы")
+        main.handle_input("ls -la #скрытые файлы")
 
         self.assertEqual(captured[0][0], "ls")
         self.assertEqual(captured[0][1], ["-la"])

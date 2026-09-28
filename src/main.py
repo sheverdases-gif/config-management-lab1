@@ -165,8 +165,12 @@ def parse_arguments() -> argparse.Namespace:
       parser = argparse.ArgumentParser(
           description="Эмулятор командной строки UNIX-подобной ОС."
           )  
-      parser.add_argument("--vfs", required = True, help = "Путь к физическому расположению VFS JSON")
-      parser.add_argument("--script", required = True, help = "Путь к стартовому скрипту эмулятора")
+      parser.add_argument(
+          "--vfs", required = True, help = 
+          "Путь к физическому расположению VFS JSON")
+      parser.add_argument(
+          "--script", required = True, help =
+            "Путь к стартовому скрипту эмулятора")
 
       return parser.parse_args()  
   
